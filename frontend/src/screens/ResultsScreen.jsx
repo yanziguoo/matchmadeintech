@@ -37,18 +37,11 @@ export default function ResultsScreen() {
     return (
         <div>
             <a href="/" className="logo-link">
-              <img src={bannerLogo} alt="Your Logo" className="small-logo" />
+                <img src={bannerLogo} alt="Your Logo" className="small-logo" />
             </a>
-            <div className="title">Results for {username}</div>
+            <div class="title">Results for {username}</div>
             <UserCard pfp={tanay} name={username} join="march" lang="ffhdskjg" commit="300" />
         </div>
-    )
+    );
 }
-
-
-
-
-
-
-
 

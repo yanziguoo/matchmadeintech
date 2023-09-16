@@ -23,3 +23,9 @@ body {
     z-index: 11;
   }
   
+  .card-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 40px;  /* Adjust the padding to your preference */
+  }
+  
