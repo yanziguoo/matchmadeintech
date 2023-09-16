@@ -7,6 +7,7 @@ from collections import defaultdict
 from os.path import join, dirname
 from dotenv import load_dotenv
 from flask_cors import CORS
+import pandas as pd
 
 app = Flask(__name__)
 CORS(app)
@@ -51,6 +52,11 @@ query GetUser($username: String!) {
     }
 }
 """
+
+with open("./data/kmeansmodel.pkl", "rb") as f:
+    model = pickle.load(f)
+with open("./data/means.csv", "rb") as f:
+    means = [float(x) for x in f.readlines()]
 
 
 @app.route('/')
@@ -107,17 +113,16 @@ def get_user(username):
     return {"success":True, "message":user_csv}
 
 
-def get_model():
-    with open("./data/kmeansmodel.pkl", "rb") as f:
-        model = pickle.load(f)
-    return model
+def standardize(data):
+    print(means)
 
 
 @app.route('/find_matches/<username>')
 def find_matches(username):
-    data = get_user(username)
-    model = get_model()
-    
+    global model, means
+
+    data = standardize(get_user(username))
     print(model.cluster_centers_)
 
     return data
+
