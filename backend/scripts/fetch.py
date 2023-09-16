@@ -1,5 +1,18 @@
 import requests
 
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
+
+training_data_path = join(dirname(__file__),'../data/training_data.csv')
+dotenv_path = join(dirname(__file__), '../.env')
+load_dotenv(dotenv_path)
+
+PA_TOKEN = os.environ.get("PA_TOKEN")
+print(PA_TOKEN)
+
+outfile = open(training_data_path, "w")
+
 query = """
 query($ids:[ID!]!) {
     nodes(ids:$ids) {
@@ -37,7 +50,7 @@ gq_url = f"{BASE_URL}/graphql"
 users_url=f"{BASE_URL}/users?per_page=25&since=0"
 
 headers = {
-    "Authorization": "Bearer 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",
+    "Authorization": f"Bearer {PA_TOKEN}",
 }
 
 variables = {
@@ -75,9 +88,13 @@ response = requests.post(gq_url, headers=headers, json=data)
 # Check if the request was successful (status code 200)
 if response.status_code == 200:
     result = response.json()
-    print(result)
+    for node in result['data']['nodes']:
+        outfile.write(f"{node['login']}\n")
+
     
 else:
     print(f"Request failed with status code {response.status_code}")
     print(response.text)
 
+
+outfile.close()
