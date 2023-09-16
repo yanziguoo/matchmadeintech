@@ -25,3 +25,15 @@ body {
   top: 10px !important;
   left: 10px !important;
 }
+
+.cards-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 800px;  /* Feel free to adjust */
+}
+
+
+
