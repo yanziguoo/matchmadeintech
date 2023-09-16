@@ -105,7 +105,7 @@ def get_user(username):
             return {"success":False, "message":"User has no pinned repositories..."}
 
         user_csv = f"{login},{id},{contributions}"
-        for x in column_headers[2:]:
+        for x in column_headers[3:]:
             user_csv += "," + str(langs[x])
     else:
         print(f"Request failed with status code {response.status_code}")

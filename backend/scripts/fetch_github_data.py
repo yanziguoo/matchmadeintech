@@ -139,7 +139,7 @@ def gql_to_csv():
             if num_bytes == 0:
                 continue
 
-            for x in column_headers[2:]:
+            for x in column_headers[3:]:
                 line += "," + str(langs[x])
             outfile.write(line + '\n')
 
@@ -152,7 +152,7 @@ def gql_to_csv():
 def main():
     last_id = 0
 
-    for i in range(1000):
+    for i in range(100):
         variables['ids'], last_id = fetch_userid_list(last_id)
         gql_to_csv()
         print(f"done batch {i+1}")
