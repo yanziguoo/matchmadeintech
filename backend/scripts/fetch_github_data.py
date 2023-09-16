@@ -127,9 +127,9 @@ def gql_to_csv():
             num_bytes = 0
 
             for i in range(len(pinned_projects)): # all pinned projects
-                for j in range(len(node['pinnedItems']['nodes'][i]['languages']['nodes'])): # all languages in project
-                    lang = node['pinnedItems']['nodes'][i]['languages']['nodes'][j]['name']
-                    b = node['pinnedItems']['nodes'][i]['languages']['edges'][j]['size']
+                for j in range(len(pinned_projects[i]['languages']['nodes'])): # all languages in project
+                    lang = pinned_projects[i]['languages']['nodes'][j]['name']
+                    b = pinned_projects[i]['languages']['edges'][j]['size']
                     num_bytes += b
                     if lang in knownLangs:
                         langs[lang] += b

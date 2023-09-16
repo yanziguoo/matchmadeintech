@@ -2,10 +2,11 @@ from flask import Flask
 import requests
 import pickle
 import os
+import base64
+from collections import defaultdict
 from os.path import join, dirname
 from dotenv import load_dotenv
 from flask_cors import CORS
-
 
 app = Flask(__name__)
 CORS(app)
@@ -18,9 +19,12 @@ headers = {
     "Authorization": f"Bearer {PA_TOKEN}",
 }
 
+column_headers = ["Username", "Id", "Contributions", "JavaScript", "Python", "Java", "C#", "PHP", "TypeScript", "Ruby", "C++", "C", "Swift", "Go", "Shell", "Kotlin", "Rust", "PowerShell", "Objective-C", "R", "MATLAB", "Dart", "Vue", "Assembly", "Sass", "CSS", "HTML", "Pascal", "Racket", "Zig", "Other"]
+knownLangs = set(column_headers)
+
 gql_query = """
 query GetUser($username: String!) {
-    user1: user(login: $username) { # my username
+    user: user(login: $username) { # my username
         login
         id
         contributionsCollection {
@@ -62,16 +66,45 @@ def get_user(username):
       }
     }
     
+    user_csv = "";
     response = requests.post("https://api.github.com/graphql", headers=headers, json=data)
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
         result = response.json()
-        print(f"-----------------\n{result}")
+    
+        try:
+            login = result['data']['user']['login']
+            id = int(str(base64.b64decode(result['data']['user']['id'])).split('r')[-1].split('n')[-1][:-1])
+            contributions = result['data']['user']['contributionsCollection']['contributionCalendar']['totalContributions']
+        except:
+            return {"success":False, "message":"Invalid user"}
+
+        langs = defaultdict(int)
+        num_bytes = 0
+        pinned_projects = result['data']['user']['pinnedItems']['nodes']
+
+        for i in range(len(pinned_projects)): # all pinned projects
+            for j in range(len(pinned_projects['nodes'][i]['languages']['nodes'])): # all languages in project
+                lang = pinned_projects['nodes'][i]['languages']['nodes'][j]['name']
+                b = pinned_projects['nodes'][i]['languages']['edges'][j]['size']
+                num_bytes += b
+                if lang in knownLangs:
+                    langs[lang] += b
+                else:
+                    langs["Other"] += b
+
+        if num_bytes == 0:
+            return {"success":False, "message":"User has no pinned projects..."}
+
+        user_csv = f"{login},{id},{contributions}"
+        for x in column_headers[2:]:
+            user_csv += "," + str(langs[x])
     else:
         print(f"Request failed with status code {response.status_code}")
         print(response.text)
         raise ValueError
-    return response.json()
+
+    return {"success":True, "message":user_csv}
 
 
 def get_model():
