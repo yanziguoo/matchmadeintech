@@ -3,8 +3,6 @@ import { useLocation } from 'react-router-dom';
 import '../styles/ResultsScreen.css';
 import UserCard from "../components/UserCard";
 import tanay from "../assets/tanay.jpeg";
-import bannerLogo from '../assets/banner logo.png'; 
-
 
 export default function ResultsScreen() {
     const [loading, setLoading] = useState(true);
@@ -36,9 +34,12 @@ export default function ResultsScreen() {
 
     return (
         <div>
+<<<<<<< HEAD
             <a href="/" className="logo-link">
                 <img src={bannerLogo} alt="Your Logo" className="small-logo" />
             </a>
+=======
+>>>>>>> parent of fb9f7d9 (logo)
             <div class="title">Results for {username}</div>
             <UserCard pfp={tanay} name={username} join="march" lang="ffhdskjg" commit="300" />
         </div>

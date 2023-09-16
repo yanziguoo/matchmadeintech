@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../styles/HomeScreen.css";
 import { useNavigate } from "react-router-dom";
-import bannerLogo from '../assets/banner logo.png';  // Add this line for the logo
 
 
 export default function HomeScreen() {
@@ -32,7 +31,7 @@ export default function HomeScreen() {
     <>
       <div style={bgStyles}>
         <div className="upload-container" id="home">
-          <img src={bannerLogo} alt="Your Logo" className="center-logo" />  {/* Display the logo */}
+          {/* <img src={centerLogo} alt="" className="center-logo" /> */}
 
           <label>
             <br></br>
