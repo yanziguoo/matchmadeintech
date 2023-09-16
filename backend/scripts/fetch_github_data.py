@@ -15,7 +15,6 @@ print(PA_TOKEN)
 
 
 outfile = open(training_data_path, "w")
-body = []
 
 query = """
 query($ids:[ID!]!) {
@@ -94,10 +93,10 @@ if response.status_code == 200:
     result = response.json()
     print(result)
 
-    column_headers = ["username", "id"]
-    foundLangs = set()
+    column_headers = ["Username", "Id", "JavaScript", "Python", "Java", "C#", "PHP", "TypeScript", "Ruby", "C++", "C", "Swift", "Go", "Shell", "Kotlin", "Rust", "PowerShell", "Objective-C", "R", "MATLAB", "Dart", "Vue", "Assembly", "Sass", "CSS", "HTML", "Pascal", "Racket", "Zig", "Other"]
+    knownLangs = set(column_headers)
 
-    outfile.write(','.join(column_headers))
+    outfile.write(','.join(column_headers) + '\n')
 
     # write to CSV
 
@@ -113,23 +112,13 @@ if response.status_code == 200:
                 lang = node['pinnedItems']['nodes'][i]['languages']['nodes'][j]['name']
                 b = node['pinnedItems']['nodes'][i]['languages']['edges'][j]['size']
                 langs[lang] += b
-                if lang not in foundLangs:
-                    foundLangs.add(lang)
-                    column_headers.append(lang)
-                    outfile.write(f",{lang}")
-
+                if lang not in knownLangs:
+                    langs["Other"] += b
 
         for x in column_headers[2:]:
-            line += ","
-            if x in langs:
-                line += str(langs[x])
+            line += "," + str(langs[x])
+        outfile.write(line + '\n')
 
-        body.append(line)
-
-    outfile.write("\n")
-    
-    for line in body:
-        outfile.write(line + "\n")
     outfile.close()
 
 else:
