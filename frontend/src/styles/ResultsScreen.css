@@ -10,3 +10,16 @@ body {
     font-size: 24px;
     padding: 20px; 
   }
+
+  .small-logo {
+    width: 100px; /* Set the width to make it smaller */
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10; /* To ensure it appears on top of other elements */
+  }
+  
+  .logo-link {
+    z-index: 11;
+  }
+  
