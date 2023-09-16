@@ -124,16 +124,20 @@ def gql_to_csv():
             langs = defaultdict(int)
             pinned_projects = node['pinnedItems']['nodes']
             
-            if len(pinned_projects) == 0:
-                continue
+            num_bytes = 0
 
             for i in range(len(pinned_projects)): # all pinned projects
                 for j in range(len(node['pinnedItems']['nodes'][i]['languages']['nodes'])): # all languages in project
                     lang = node['pinnedItems']['nodes'][i]['languages']['nodes'][j]['name']
                     b = node['pinnedItems']['nodes'][i]['languages']['edges'][j]['size']
-                    langs[lang] += b
-                    if lang not in knownLangs:
+                    num_bytes += b
+                    if lang in knownLangs:
+                        langs[lang] += b
+                    else:
                         langs["Other"] += b
+
+            if num_bytes == 0:
+                continue
 
             for x in column_headers[2:]:
                 line += "," + str(langs[x])
@@ -158,3 +162,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
