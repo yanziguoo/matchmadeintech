@@ -1,4 +1,4 @@
-import glob
+import random
 import requests
 import base64
 import os
@@ -152,8 +152,9 @@ def gql_to_csv():
 def main():
     last_id = 0
 
-    for i in range(100):
+    for i in range(1000):
         variables['ids'], last_id = fetch_userid_list(last_id)
+        last_id += random.randint(1, 100000)
         gql_to_csv()
         print(f"done batch {i+1}")
 
