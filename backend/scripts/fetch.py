@@ -1,6 +1,7 @@
 import requests
-
+import base64
 import os
+from collections import defaultdict
 from os.path import join, dirname
 from dotenv import load_dotenv
 
@@ -88,9 +89,23 @@ response = requests.post(gq_url, headers=headers, json=data)
 # Check if the request was successful (status code 200)
 if response.status_code == 200:
     result = response.json()
-    for node in result['data']['nodes']:
-        outfile.write(f"{node['login']}\n")
 
+    for node in result['data']['nodes']:
+        username = node['login']
+        id = int(str(base64.b64decode(node['id'])).split('r')[1][:-1])
+        # id = int(base64.decode(node[id]).split('r')[1])
+        langs = defaultdict(int)
+
+        for i in range(len(node['pinnedItems']['nodes'])): # all pinned projects
+            for j in range(len(node['pinnedItems']['nodes'][i]['languages']['nodes'])): # all languages in project
+                lang = node['pinnedItems']['nodes'][i]['languages']['nodes'][j]['name']
+                b = node['pinnedItems']['nodes'][i]['languages']['edges'][j]['size']
+                langs[lang] += b
+
+        outfile.write(f"{node['login']},{id},")
+        for x in langs:
+            outfile.write(f"{x},{langs[x]},")
+        outfile.write("\n")
     
 else:
     print(f"Request failed with status code {response.status_code}")
