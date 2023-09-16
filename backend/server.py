@@ -8,6 +8,7 @@ from os.path import join, dirname
 from dotenv import load_dotenv
 from flask_cors import CORS
 import pandas as pd
+from sklearn.preprocessing import FunctionTransformer
 
 app = Flask(__name__)
 CORS(app)
@@ -55,8 +56,9 @@ query GetUser($username: String!) {
 
 with open("./data/kmeansmodel.pkl", "rb") as f:
     model = pickle.load(f)
-with open("./data/means.csv", "rb") as f:
-    means = [float(x) for x in f.readlines()]
+
+meanAndStd = pd.read_csv("./data/meanAndStd.csv")
+
 
 
 @app.route('/')
@@ -72,7 +74,7 @@ def get_user(username):
       }
     }
     
-    user_csv = "";
+    user_csv = ""
     response = requests.post("https://api.github.com/graphql", headers=headers, json=data)
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
@@ -100,7 +102,7 @@ def get_user(username):
                     langs["Other"] += b
 
         if num_bytes == 0:
-            return {"success":False, "message":"User has no pinned projects..."}
+            return {"success":False, "message":"User has no pinned repositories..."}
 
         user_csv = f"{login},{id},{contributions}"
         for x in column_headers[2:]:
@@ -110,19 +112,41 @@ def get_user(username):
         print(response.text)
         raise ValueError
 
-    return {"success":True, "message":user_csv}
-
-
-def standardize(data):
-    print(means)
+    with open("./data/user.csv", "w") as f:
+        f.write(f"{','.join(column_headers)}\n{user_csv}\n")
+    return {"success":True}
 
 
 @app.route('/find_matches/<username>')
 def find_matches(username):
-    global model, means
+    global model, meanAndStd
 
-    data = standardize(get_user(username))
-    print(model.cluster_centers_)
+    response = get_user(username)
+    if not response["success"]:
+        return response["message"]
+    data = pd.read_csv("./data/user.csv")
 
-    return data
+    # convert to proper format
+    col = ["Id", "Contributions", "JavaScript", "Python", "Java", "C#", "PHP", "TypeScript", "Ruby", "C++", "C", "Swift", "Go", "Shell", "Kotlin", "Rust", "PowerShell", "Objective-C", "R", "MATLAB", "Dart", "Vue", "Assembly", "Sass", "CSS", "HTML", "Pascal", "Racket", "Zig", "Other"]
+    def turn_to_percent(X, columns):
+        X[columns] = X[columns].div(X[columns].sum(axis=1), axis=0)
+        return X
+
+    # Create a FunctionTransformer using the defined function and pass the subset_columns argument
+    transformer = FunctionTransformer(turn_to_percent, validate=False, kw_args={'columns': col[2:]})
+
+    # Apply the transformation to your dataset
+    data = transformer.transform(data)
+
+    for lang in meanAndStd:
+        data[lang + '-T'] = (data[lang] - meanAndStd[lang][0]) / meanAndStd[lang][1]
+    
+    print(data.head())
+
+    # prediction
+    predicted_cluster = model.predict(data)
+    print(predicted_cluster)
+    
+
+    return response
 
