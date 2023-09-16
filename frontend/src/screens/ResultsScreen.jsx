@@ -35,9 +35,12 @@ export default function ResultsScreen() {
     return (
         <div>
 <<<<<<< HEAD
+<<<<<<< HEAD
             <a href="/" className="logo-link">
                 <img src={bannerLogo} alt="Your Logo" className="small-logo" />
             </a>
+=======
+>>>>>>> parent of fb9f7d9 (logo)
 =======
 >>>>>>> parent of fb9f7d9 (logo)
             <div class="title">Results for {username}</div>
