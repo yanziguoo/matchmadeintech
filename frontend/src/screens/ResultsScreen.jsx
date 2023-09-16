@@ -1,5 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import { useLocation } from 'react-router-dom';
+import '../styles/ResultsScreen.css';
+import UserCard from "../components/UserCard";
+import tanay from "../assets/tanay.jpeg";
 
 export default function ResultsScreen() {
     const [loading, setLoading] = useState(true);
@@ -31,7 +34,8 @@ export default function ResultsScreen() {
 
     return (
         <div>
-            <h1>Results for {username}</h1>
+            <div class="title">Results for {username}</div>
+            <UserCard pfp={tanay} name={username} join="march" lang="ffhdskjg" commit="300" />
         </div>
     )
 }

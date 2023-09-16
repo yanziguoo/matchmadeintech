@@ -1,0 +1,12 @@
+body {
+    background-color: #454555; 
+    margin: 0; 
+    padding: 0;
+  }
+  
+  .title {
+    text-align: center;
+    color: #fff;
+    font-size: 24px;
+    padding: 20px; 
+  }
