@@ -1,0 +1,30 @@
+.card-container {
+    width: 400px;
+    height: 600px;
+    background-color: #FFE8FA;
+    border-radius: 25px;
+    margin-left: 100px;
+}
+
+.backdrop {
+    background-color: #B2B6FF;
+    margin-left: 5;
+}
+
+.img{
+    width:200px;
+    height:200px;
+    border-radius: 25cm;
+    margin-top: 66px;
+}
+
+.text{
+    font-size: 1rem;
+    color: black;
+    padding-top: 20px;
+}
+
+.name{
+    font-size: 2rem;
+    color: black;
+}
