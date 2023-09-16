@@ -5,14 +5,16 @@ from collections import defaultdict
 from os.path import join, dirname
 from dotenv import load_dotenv
 
-training_data_path = join(dirname(__file__),'../data/training_data.csv')
 dotenv_path = join(dirname(__file__), '../.env')
 load_dotenv(dotenv_path)
-
 PA_TOKEN = os.environ.get("PA_TOKEN")
-print(PA_TOKEN)
 
+training_data_path = join(dirname(__file__),'../data/training_data.csv')
 outfile = open(training_data_path, "w")
+
+BASE_URL = "https://api.github.com"
+gq_url = f"{BASE_URL}/graphql"
+users_url=f"{BASE_URL}/users?per_page=25&since=0"
 
 query = """
 query($ids:[ID!]!) {
@@ -45,10 +47,6 @@ query($ids:[ID!]!) {
     }
 }
 """
-
-BASE_URL = "https://api.github.com"
-gq_url = f"{BASE_URL}/graphql"
-users_url=f"{BASE_URL}/users?per_page=25&since=0"
 
 headers = {
     "Authorization": f"Bearer {PA_TOKEN}",
