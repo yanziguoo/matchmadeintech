@@ -1,5 +1,6 @@
 from flask import Flask
 import requests
+import pickle
 import os
 from os.path import join, dirname
 from dotenv import load_dotenv
@@ -53,7 +54,6 @@ def hello_world():
   return 'Hello world!'
 
 
-@app.route('/get_user/<username>')
 def get_user(username):
     data = {
       'query': gql_query,
@@ -72,3 +72,19 @@ def get_user(username):
         print(response.text)
         raise ValueError
     return response.json()
+
+
+def get_model():
+    with open("./data/kmeansmodel.pkl", "rb") as f:
+        model = pickle.load(f)
+    return model
+
+
+@app.route('/find_matches/<username>')
+def find_matches(username):
+    data = get_user(username)
+    model = get_model()
+    
+    print(model.cluster_centers_)
+
+    return data
