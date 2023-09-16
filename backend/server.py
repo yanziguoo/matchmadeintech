@@ -90,9 +90,9 @@ def get_user(username):
         pinned_projects = result['data']['user']['pinnedItems']['nodes']
 
         for i in range(len(pinned_projects)): # all pinned projects
-            for j in range(len(pinned_projects['nodes'][i]['languages']['nodes'])): # all languages in project
-                lang = pinned_projects['nodes'][i]['languages']['nodes'][j]['name']
-                b = pinned_projects['nodes'][i]['languages']['edges'][j]['size']
+            for j in range(len(pinned_projects[i]['languages']['nodes'])): # all languages in project
+                lang = pinned_projects[i]['languages']['nodes'][j]['name']
+                b = pinned_projects[i]['languages']['edges'][j]['size']
                 num_bytes += b
                 if lang in knownLangs:
                     langs[lang] += b
