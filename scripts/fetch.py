@@ -1,31 +1,27 @@
 import requests
 
 query = """
-{
-    search(query: "location:san francisco", type: USER, first: 25) {
-        userCount
-        edges {
-            node {
-                ... on User {
-                    id
-                    contributionsCollection {
-                        contributionCalendar {
-                            totalContributions
-                        }
-                    }
-                    pinnedItems(first: 6, types: REPOSITORY) {
-                        nodes {
-                            ... on Repository {
+query($ids:[ID!]!) {
+    nodes(ids:$ids) {
+        ... on User {
+            login
+            id
+            contributionsCollection {
+                contributionCalendar {
+                    totalContributions
+                }
+            }
+            pinnedItems(first: 6, types: REPOSITORY) {
+                nodes {
+                    ... on Repository {
+                        name
+                        id
+                        languages(first: 10) {
+                            edges {
+                                size
+                            }
+                            nodes {
                                 name
-                                id
-                                languages(first: 10) {
-                                    edges {
-                                        size
-                                    }
-                                    nodes {
-                                        name
-                                    }
-                                }
                             }
                         }
                     }
@@ -62,25 +58,26 @@ if userid_fetch_response.status_code == 200:
     result = userid_fetch_response.json()
 
     for user in result:
-        print(user['node_id'])
+        # print(user['node_id'])
         ids.append(user['node_id'])
 
 else:
     print(f"Request failed with status code {userid_fetch_response.status_code}")
     print(userid_fetch_response.text)
 
-print(ids)
+
+# print(ids)
 
 variables['ids'] = ids
 
-# response = requests.post(url, headers=headers, json=data)
+response = requests.post(gq_url, headers=headers, json=data)
 
-# # Check if the request was successful (status code 200)
-# if response.status_code == 200:
-#     result = response.json()
-
-
-# else:
-#     print(f"Request failed with status code {response.status_code}")
-#     print(response.text)
+# Check if the request was successful (status code 200)
+if response.status_code == 200:
+    result = response.json()
+    print(result)
+    
+else:
+    print(f"Request failed with status code {response.status_code}")
+    print(response.text)
 
