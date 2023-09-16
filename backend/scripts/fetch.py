@@ -6,13 +6,16 @@ from os.path import join, dirname
 from dotenv import load_dotenv
 
 training_data_path = join(dirname(__file__),'../data/training_data.csv')
+
 dotenv_path = join(dirname(__file__), '../.env')
 load_dotenv(dotenv_path)
 
 PA_TOKEN = os.environ.get("PA_TOKEN")
 print(PA_TOKEN)
 
+
 outfile = open(training_data_path, "w")
+body = []
 
 query = """
 query($ids:[ID!]!) {
@@ -89,10 +92,19 @@ response = requests.post(gq_url, headers=headers, json=data)
 # Check if the request was successful (status code 200)
 if response.status_code == 200:
     result = response.json()
+    print(result)
+
+    column_headers = ["username", "id"]
+    foundLangs = set()
+
+    outfile.write(','.join(column_headers))
+
+    # write to CSV
 
     for node in result['data']['nodes']:
         username = node['login']
         id = int(str(base64.b64decode(node['id'])).split('r')[1][:-1])
+        line = f"{username},{id}"
         # id = int(base64.decode(node[id]).split('r')[1])
         langs = defaultdict(int)
 
@@ -101,15 +113,26 @@ if response.status_code == 200:
                 lang = node['pinnedItems']['nodes'][i]['languages']['nodes'][j]['name']
                 b = node['pinnedItems']['nodes'][i]['languages']['edges'][j]['size']
                 langs[lang] += b
+                if lang not in foundLangs:
+                    foundLangs.add(lang)
+                    column_headers.append(lang)
+                    outfile.write(f",{lang}")
 
-        outfile.write(f"{node['login']},{id},")
-        for x in langs:
-            outfile.write(f"{x},{langs[x]},")
-        outfile.write("\n")
+
+        for x in column_headers[2:]:
+            line += ","
+            if x in langs:
+                line += str(langs[x])
+
+        body.append(line)
+
+    outfile.write("\n")
     
+    for line in body:
+        outfile.write(line + "\n")
+    outfile.close()
+
 else:
     print(f"Request failed with status code {response.status_code}")
     print(response.text)
 
-
-outfile.close()
