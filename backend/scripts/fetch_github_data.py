@@ -148,7 +148,7 @@ def gql_to_csv():
 def main():
     last_id = 0
 
-    for i in range(100):
+    for i in range(4000):
         variables['ids'], last_id = fetch_userid_list(last_id)
         gql_to_csv()
         print(f"done batch {i+1}")
