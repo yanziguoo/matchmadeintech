@@ -1,39 +1,27 @@
 body {
-    background-color: #454555; 
-    margin: 0; 
-    padding: 0;
-  }
-  
-  .title {
-    text-align: center;
-    color: #fff;
-    font-size: 24px;
-    padding: 20px; 
-<<<<<<< HEAD
-<<<<<<< HEAD
-  }
+  background-color: #454555; 
+  margin: 0; 
+  padding: 0;
+}
 
-  .small-logo {
-    width: 100px; /* Set the width to make it smaller */
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    z-index: 10; /* To ensure it appears on top of other elements */
-  }
-  
-  .logo-link {
-    z-index: 11;
-  }
-  
-  .card-container {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 40px;  /* Adjust the padding to your preference */
-  }
-  
-=======
-  }
->>>>>>> parent of fb9f7d9 (logo)
-=======
-  }
->>>>>>> parent of fb9f7d9 (logo)
+.title {
+  text-align: center;
+  color: #fff;
+  font-size: 24px;
+  padding: 20px; 
+}
+
+.small-logo {
+  width: 80px !important;
+  position: absolute !important;
+  top: 10px !important;
+  left: 10px !important;
+  z-index: 10 !important;
+}
+
+.logo-link {
+  z-index: 11 !important;
+  position: absolute !important;
+  top: 10px !important;
+  left: 10px !important;
+}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/HomeScreen.css";
 import { useNavigate } from "react-router-dom";
-
+import bannerLogo from '../assets/banner logo.png';
 
 export default function HomeScreen() {
   const [formData, setFormData] = useState("");
@@ -17,22 +17,16 @@ export default function HomeScreen() {
   };
 
   const bgStyles = {
-    // backgroundImage: `url(${bg})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    height: "100vh",
-    width: "100vw",
-    top:0,
-    display: 'flex',
-  };
+    // ... existing properties
+    justifyContent: 'center',  // Add this line
+    alignItems: 'center',  // Add this line
+};
 
   return (
     <>
       <div style={bgStyles}>
         <div className="upload-container" id="home">
-          {/* <img src={centerLogo} alt="" className="center-logo" /> */}
-
+          <img src={bannerLogo} alt="Your Logo" className="center-logo" />
           <label>
             <br></br>
             <b style={{ color: "black" }}>Enter your username here: </b>
@@ -46,7 +40,7 @@ export default function HomeScreen() {
                     type="string"
                     id="username"
                     name="username"
-                    value={formData.item}
+                    value={formData}
                     placeholder="Enter username here"
                     onChange={handleChange}
                   />
