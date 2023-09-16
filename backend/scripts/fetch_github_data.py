@@ -5,11 +5,12 @@ from collections import defaultdict
 from os.path import join, dirname
 from dotenv import load_dotenv
 
+training_data_path = join(dirname(__file__),'../data/training_data.csv')
+
 dotenv_path = join(dirname(__file__), '../.env')
 load_dotenv(dotenv_path)
 PA_TOKEN = os.environ.get("PA_TOKEN")
 
-training_data_path = join(dirname(__file__),'../data/training_data.csv')
 outfile = open(training_data_path, "w")
 
 BASE_URL = "https://api.github.com"
@@ -87,10 +88,19 @@ response = requests.post(gq_url, headers=headers, json=data)
 # Check if the request was successful (status code 200)
 if response.status_code == 200:
     result = response.json()
+    print(result)
+
+    column_headers = ["Username", "Id", "JavaScript", "Python", "Java", "C#", "PHP", "TypeScript", "Ruby", "C++", "C", "Swift", "Go", "Shell", "Kotlin", "Rust", "PowerShell", "Objective-C", "R", "MATLAB", "Dart", "Vue", "Assembly", "Sass", "CSS", "HTML", "Pascal", "Racket", "Zig", "Other"]
+    knownLangs = set(column_headers)
+
+    outfile.write(','.join(column_headers) + '\n')
+
+    # write to CSV
 
     for node in result['data']['nodes']:
         username = node['login']
         id = int(str(base64.b64decode(node['id'])).split('r')[1][:-1])
+        line = f"{username},{id}"
         # id = int(base64.decode(node[id]).split('r')[1])
         langs = defaultdict(int)
 
@@ -99,15 +109,16 @@ if response.status_code == 200:
                 lang = node['pinnedItems']['nodes'][i]['languages']['nodes'][j]['name']
                 b = node['pinnedItems']['nodes'][i]['languages']['edges'][j]['size']
                 langs[lang] += b
+                if lang not in knownLangs:
+                    langs["Other"] += b
 
-        outfile.write(f"{node['login']},{id},")
-        for x in langs:
-            outfile.write(f"{x},{langs[x]},")
-        outfile.write("\n")
-    
+        for x in column_headers[2:]:
+            line += "," + str(langs[x])
+        outfile.write(line + '\n')
+
+    outfile.close()
+
 else:
     print(f"Request failed with status code {response.status_code}")
     print(response.text)
 
-
-outfile.close()
