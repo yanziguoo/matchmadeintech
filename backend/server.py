@@ -3,6 +3,11 @@ import requests
 import os
 from os.path import join, dirname
 from dotenv import load_dotenv
+from flask_cors import CORS
+
+
+app = Flask(__name__)
+CORS(app)
 
 dotenv_path = join(dirname(__file__), '../.env')
 load_dotenv(dotenv_path)
@@ -12,16 +17,7 @@ headers = {
     "Authorization": f"Bearer {PA_TOKEN}",
 }
 
-app = Flask(__name__)
-
-@app.route('/')
-def hello_world():
-  return 'Hello world!'
-
-
-@app.route('/get_user/<username>')
-def get_user(username):
-    gql_query = """
+gql_query = """
 query GetUser($username: String!) {
     user1: user(login: $username) { # my username
         login
@@ -51,13 +47,21 @@ query GetUser($username: String!) {
 }
 """
 
-    data = {
-        'query': gql_query,
-        'variables': {
-           "username": username
-        }
-    }
 
+@app.route('/')
+def hello_world():
+  return 'Hello world!'
+
+
+@app.route('/get_user/<username>')
+def get_user(username):
+    data = {
+      'query': gql_query,
+      'variables': {
+        "username": username
+      }
+    }
+    
     response = requests.post("https://api.github.com/graphql", headers=headers, json=data)
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
