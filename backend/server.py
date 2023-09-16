@@ -8,8 +8,42 @@ dotenv_path = join(dirname(__file__), '../.env')
 load_dotenv(dotenv_path)
 PA_TOKEN = os.environ.get("PA_TOKEN")
 
+gql_query = """
+{
+  user1: user(login: $username) { # my username
+    login
+    id
+    contributionsCollection {
+        contributionCalendar {
+            totalContributions
+        }
+    }
+    pinnedItems(first: 6, types: REPOSITORY) {
+      nodes {
+          ... on Repository {
+              name
+              id
+              languages(first: 10) {
+                  edges {
+                      size
+                  }
+                  nodes {
+                      name
+                  }
+              }
+          }
+      }
+    }
+  }
+}
+"""
+
 headers = {
     "Authorization": f"Bearer {PA_TOKEN}",
+}
+
+data = {
+    'query': gql_query,
 }
 
 app = Flask(__name__)
@@ -21,5 +55,9 @@ def hello_world():
 
 @app.route('/get_user/<username>')
 def get_user(username):
-  response = requests.get("https://api.github.com/users/aazzazron", headers=headers)
-  return username
+  response = requests.post("https://api.github.com/graphql", headers=headers, json=data)
+  # Check if the request was successful (status code 200)
+  if response.status_code == 200:
+      result = response.json()
+      print(result)
+  return response.json()
