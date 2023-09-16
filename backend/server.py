@@ -22,6 +22,7 @@ headers = {
 }
 
 column_headers = ["Username", "Id", "Contributions", "JavaScript", "Python", "Java", "C#", "PHP", "TypeScript", "Ruby", "C++", "C", "Swift", "Go", "Shell", "Kotlin", "Rust", "PowerShell", "Objective-C", "R", "MATLAB", "Dart", "Vue", "Assembly", "Sass", "CSS", "HTML", "Pascal", "Racket", "Zig", "Other"]
+tcols = [x + '-T' for x in column_headers[1:]]
 knownLangs = set(column_headers)
 
 gql_query = """
@@ -124,7 +125,7 @@ def find_matches(username):
     response = get_user(username)
     if not response["success"]:
         return response["message"]
-    data = pd.read_csv("./data/user.csv")
+    data = pd.read_csv("./data/user.csv", index_col=0)
 
     # convert to proper format
     col = ["Id", "Contributions", "JavaScript", "Python", "Java", "C#", "PHP", "TypeScript", "Ruby", "C++", "C", "Swift", "Go", "Shell", "Kotlin", "Rust", "PowerShell", "Objective-C", "R", "MATLAB", "Dart", "Vue", "Assembly", "Sass", "CSS", "HTML", "Pascal", "Racket", "Zig", "Other"]
@@ -141,11 +142,11 @@ def find_matches(username):
     for lang in meanAndStd:
         data[lang + '-T'] = (data[lang] - meanAndStd[lang][0]) / meanAndStd[lang][1]
     
-    print(data.head())
 
     # prediction
-    predicted_cluster = model.predict(data)
+    predicted_cluster = model.predict(data[tcols])[0]
     print(predicted_cluster)
+
     
 
     return response
