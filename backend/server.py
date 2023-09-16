@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 from flask_cors import CORS
 import pandas as pd
 from sklearn.preprocessing import FunctionTransformer
+import random
 
 app = Flask(__name__)
 CORS(app)
@@ -59,6 +60,7 @@ with open("./data/kmeansmodel.pkl", "rb") as f:
     model = pickle.load(f)
 
 meanAndStd = pd.read_csv("./data/meanAndStd.csv")
+training_data = pd.read_csv("./data/clustered_data.csv", index_col=0)
 
 
 
@@ -147,7 +149,24 @@ def find_matches(username):
     predicted_cluster = model.predict(data[tcols])[0]
     print(predicted_cluster)
 
-    
+    condition = training_data['cluster'] == predicted_cluster
+    cluster = training_data[condition]
+    print(cluster)
+    picked = cluster.sample(n=min(len(cluster), 20), random_state=0)
+    ret = []
+    print(picked)
 
-    return response
+    for username, row in picked.iterrows():
+        curr = {}
+        curr['username'] = username
+        curr['id'] = row['Id']
+        curr['contributions'] = row['Contributions']
+        curr['languages'] = {}
+        for lang in col[2:]:
+            if row[lang] > 0:
+                curr['languages'][lang] = row[lang]
+        ret.append(curr)
+
+    return ret
+
 
