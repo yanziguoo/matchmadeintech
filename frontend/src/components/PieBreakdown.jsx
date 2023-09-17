@@ -42,7 +42,6 @@ export default function PieBreakdown(props) {
   const serialize = (obj) => {
     const data = []
     for (const [index, item] of obj.entries()) {
-      console.log(index, item)
       data.push({ title: `${item.label} - ${(item.quantity * 100).toFixed(1)}%` , value: item.quantity * 100, color: colors[item.label] });
     }
     return data;
