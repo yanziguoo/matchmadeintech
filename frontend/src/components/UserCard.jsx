@@ -11,6 +11,7 @@ export default function UserCard(props) {
   const name = props.name;
   const commit = props.commit;
   const showArrows = props.showArrows; // New prop to control displaying of arrows
+  const lang = props.lang;
 
   return (
     <div className="positioning-container">
@@ -19,7 +20,7 @@ export default function UserCard(props) {
         <img src={pfp} className="img" alt="profile" />
         <div className="name">{name}</div>
         <div className="text">Commits: {commit}</div>
-        <PieBreakdown />
+        <PieBreakdown list={lang}/>
 
         {showArrows && (
           <>
