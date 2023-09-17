@@ -13,7 +13,7 @@ export default function ResultsScreen() {
   const [currMatch, setCurrMatch] = useState({});
   const [errorMess, setErrorMess] = useState('');
   const [curInd, setCurInd] = useState(0);
-  const [matched, setMatched] = useState([]);
+  const [matched, setMatched] = useState(new Array(matches.length).fill(1));
 
   const location = useLocation();
 
@@ -37,9 +37,12 @@ export default function ResultsScreen() {
     setCurrMatch(matches[curInd]);
   }, [curInd]);
 
+  useEffect(() => {
+    console.log(matched);
+  }, [matched]);
+
   
   useEffect(() => {
-    setMatched(new Array(matches.length).fill(1));
     const username = location.state;
 
     axios.get(`http://localhost:5000/find_matches/${username}`)
