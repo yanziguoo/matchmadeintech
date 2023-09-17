@@ -28,12 +28,11 @@ body {
 
 .cards-container {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 800px;  /* Feel free to adjust */
+  height: 100vh;  /* Full viewport height */
 }
+
 
 
 

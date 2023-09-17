@@ -22,7 +22,7 @@ export default function ResultsScreen() {
       <div>
         <h1>Loading...</h1>
       </div>
-    );
+    )
   }
 
   if (!username) {
@@ -30,7 +30,7 @@ export default function ResultsScreen() {
       <div>
         <h1>Invalid username</h1>
       </div>
-    );
+    )
   }
 
   return (
@@ -38,14 +38,10 @@ export default function ResultsScreen() {
       <a href="/" className="logo-link">
         <img src={bannerLogo} alt="Your Logo" className="small-logo" />
       </a>
-      <div className="title">Results for {username}</div>
       <div className="cards-container">
         <UserCard pfp={tanay} name={username} join="march" lang="ffhdskjg" commit="300" />
         <UserCard pfp={tanay} name="Placeholder" join="april" lang="random" commit="400" />
       </div>
     </div>
-  )
-
-
-
+  );
 }
