@@ -8,6 +8,7 @@ import leftArrow from '../assets/left-arrow.svg';
 
 export default function UserCard(props) {
   const pfp = props.pfp;
+  const joindate = props.joindate;
   const name = props.name;
   const commit = props.commit;
   const showArrows = props.showArrows; // New prop to control displaying of arrows
@@ -17,6 +18,10 @@ export default function UserCard(props) {
   const handleArrowClick = props.handleArrowClick;
 
   const colors = ["red", "gray", "green"]
+  const full = { year: 'numeric', month: 'long', day: 'numeric' }
+  const year = { year: 'numeric' }
+  const displayDate = new Date(joindate).toLocaleDateString('en-US', full)
+  const yearDate = new Date().toLocaleDateString('en-US', year)
 
   return (
     <div className="positioning-container">
@@ -25,7 +30,8 @@ export default function UserCard(props) {
         {showCircle && <div className='swiped-circle' style={{background: colors[matched]}}></div>}
         <img src={pfp} className="img" alt="profile" />
         <div className="name">{name}</div>
-        <div className="text">Commits: {commit}</div>
+        <div className="joindate">Joined: {displayDate}</div>
+        <div className="text" style={{marginBottom: "16px"}}>Contributions in {yearDate}: {commit}</div>
 
         <PieBreakdown list={lang}/>
 

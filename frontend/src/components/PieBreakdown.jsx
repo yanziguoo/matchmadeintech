@@ -7,6 +7,8 @@ export default function PieBreakdown(props) {
     quantity
   }));
 
+  sampleData.sort((a, b) => b.quantity - a.quantity);
+
   const colors = {
     "JavaScript": "#E38627",
     "Python": "#C13C37",
@@ -38,7 +40,6 @@ export default function PieBreakdown(props) {
     "Other": "#7aeb9f"
   };
   
-  
   const serialize = (obj) => {
     const data = []
     for (const [index, item] of obj.entries()) {
@@ -47,17 +48,16 @@ export default function PieBreakdown(props) {
     return data;
   }
 
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <PieChart
         data={serialize(sampleData)}
         style={{ height: '150px', width: '150px' }}
       />
-      <div style={{ marginTop: '10px' }}>
+      <div style={{ marginTop: '10px', height: '70px', minWidth: '150%', overflowY: "scroll"}}>
         {serialize(sampleData).map((dataEntry, index) => (
           <div key={index} style={{ color: dataEntry.color, marginBottom: '5px' }}>
-            {`${dataEntry.title}: ${Math.round(dataEntry.value)}%`}
+            {`${dataEntry.title}`}
           </div>
         ))}
       </div>
