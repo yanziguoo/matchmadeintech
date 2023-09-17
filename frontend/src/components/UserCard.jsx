@@ -29,7 +29,7 @@ export default function UserCard(props) {
       <div className={`card-container ${showArrows ? 'arrow-container' : ''}`}>
         {showCircle && <div className='swiped-circle' style={{background: colors[matched]}}></div>}
         <img src={pfp} className="img" alt="profile" />
-        <div className="name">{name}</div>
+        <a href={`https://github.com/${name}`} className="name">{name}</a>
         <div className="joindate">Joined: {displayDate}</div>
         <div className="text" style={{marginBottom: "16px"}}>Contributions in {yearDate}: {commit}</div>
 
