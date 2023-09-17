@@ -29,7 +29,7 @@ export default function HomeScreen() {
           <img src={bannerLogo} alt="Your Logo" className="center-logo" />
           <label>
             <br></br>
-            <b style={{ color: "black" }}>Enter your username here: </b>
+            <b style={{ color: "white" }}>Enter your username here: </b>
           </label>
           <table>
             <tbody>
