@@ -8,22 +8,25 @@ import axios from 'axios';
 
 export default function ResultsScreen() {
   const [loading, setLoading] = useState(true);
-  const [username, setUsername] = useState('');
+  const [user, setUser] = useState('');
   const [matches, setMatches] = useState([]);
+  const [errorMess, setErrorMess] = useState('');
   const location = useLocation();
   let curInd = 0;
 
   useEffect(() => {
     const username = location.state;
-    console.log(username);
-    setUsername(username);
 
     axios.get(`http://localhost:5000/find_matches/${username}`)
       .then(res => {
-        console.log(res.data);
-        setMatches(res.data);
+        if (res.data && res.data.success) {
+          setMatches(res.data.matches);
+          setUser(res.data.user);
+        } else {
+          setErrorMess(res.data.message);
+        }
+        console.log(res.data)
         setLoading(false);
-        console.log(res.data);
       })
       .catch(err => console.log(err));
     
@@ -295,13 +298,13 @@ export default function ResultsScreen() {
     )
   }
 
-  if (!username) {
+  if (!user) {
     return (
       <div>
         <a href="/" className="logo-link">
             <img src={bannerLogo} alt="Your Logo" className="small-logo" />
         </a>
-        <h1>Invalid username</h1>
+        <h1>{errorMess}</h1>
         
       </div>
     )
@@ -314,10 +317,11 @@ export default function ResultsScreen() {
       </a>
       {/* <div>{matches[0]['username']}</div> */}
       <div className="cards-container">
-      <UserCard pfp={tanay} name={username} lang="ffhdskjg" commit="300" showArrows={false} />
+      <UserCard pfp={tanay} name={user["username"]} lang={user["languages"]} commit={user["contributions"]} showArrows={true} />
       <UserCard pfp={tanay} name={matches[curInd]['username']} lang={matches[curInd]['languages']} commit={matches[curInd]['contributions']} showArrows={true} />
       </div>
 
     </div>
   );
 }
+
