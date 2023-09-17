@@ -32,6 +32,8 @@ export default function PieBreakdown() {
     return (
         <PieChart
             data={pieData}
+            style={{ backgroundColor: 'transparent' }}
         />
+
     )
 }

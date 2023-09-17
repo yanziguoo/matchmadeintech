@@ -14,11 +14,11 @@ export default function UserCard(props) {
       <div className="positioning-container">
         <div className="backdrop"></div>
         <div className="card-container">
-          {/* <img src={pfp} className="img" alt="profile" />
+           <img src={pfp} className="img" alt="profile" />
           <div className="name">{name}</div>
           <div className="text">Joined: {join}</div>
           <div className="text">Language breakdown: {lang}</div>
-          <div className="text">Commits: {commit}</div> */}
+          <div className="text">Commits: {commit}</div> 
           <PieBreakdown />
         </div>
       </div>
