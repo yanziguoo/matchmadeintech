@@ -11,7 +11,7 @@
   border-radius: 25px;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
   width: 290px;  /* Slightly smaller than the card */
-  height: 490px;  /* Slightly smaller than the card */
+  height: 0px;  /* Slightly smaller than the card */
   position: absolute;
   z-index: 1;  /* Lower z-index */
   top: 10px;  /* Shift down */
@@ -32,25 +32,32 @@
   z-index: 2;
   justify-content: flex-start; /* Align items to the top */
   padding-top: 10px; /* Add some padding at the top */
+  
 }
 
 .img {
-  width: 150px;
-  height: 150px;
-  border-radius: 25cm;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%; /* Makes the image circular */
   margin-top: 30px;  /* Decreased from 20px to 10px */
   margin-bottom: 10px;  /* Added a small bottom margin */
 }
 
-.pie-container {
-  align-self: center; /* Center horizontally */
-  width: 150px; /* Reduced size */
-  height: 150px; /* Reduced size */
+.pie-chart-container {
+  width: 200px; /* set width as needed */
+  padding-top: 30px;
+  height: 200px; /* set height as needed */
 }
-
 .name {
   font-size: 2rem;
   color: black;
-  margin-top: 5px;  /* Reduced top margin to compress */
-  margin-bottom: 5px;  /* Reduced bottom margin to compress */
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.text {
+  font-size: 1rem;
+  color: black;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
