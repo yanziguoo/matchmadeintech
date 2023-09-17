@@ -1,3 +1,4 @@
+import random
 from flask import Flask
 import requests
 import pickle
@@ -83,7 +84,7 @@ def get_user(username):
     
         try:
             login = result['data']['user']['login']
-            id = int(str(base64.b64decode(result['data']['user']['id'])).split('r')[-1].split('n')[-1][:-1])
+            id = random.randint(1, 2)
             contributions = result['data']['user']['contributionsCollection']['contributionCalendar']['totalContributions']
         except:
             return {"success":False, "message":"Invalid user"}

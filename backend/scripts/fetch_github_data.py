@@ -50,6 +50,7 @@ query($ids:[ID!]!) {
 
 headers = {
     "Authorization": f"Bearer {PA_TOKEN}",
+    "X-Github-Next-Global-ID": '1',
 }
 
 variables = {
@@ -71,15 +72,14 @@ outfile.write(','.join(column_headers) + '\n')
 def fetch_userid_list(since):
     userid_fetch_response = requests.get(f"{BASE_URL}/users?per_page=20&since={since}", headers=headers)
     ids = []
-    last_id = 1
+    last_id = since + 1
 
     if userid_fetch_response.status_code == 200:
         result = userid_fetch_response.json()
 
         for user in result:
-            # print(user['node_id'])
             ids.append(user['node_id'])
-            last_id = int(str(base64.b64decode(user['node_id'])).split('r')[-1].split('n')[-1][:-1])
+        last_id += random.randint(1000, 2000)
 
     else:
         print(f"Request failed with status code {userid_fetch_response.status_code}")
@@ -97,27 +97,22 @@ def gql_to_csv():
     if response.status_code == 200:
         result = response.json()
         
+        non_users = 0
         try:
             print(result['data']['nodes'][0]['login'])
         except:
-            print("Could not obtain first username of batch")
+            print("Could not obtain first username of batch (most likely not a user)")
+            non_users += 1        
 
-        # write to CSV
+        # write to CSV        
         for node in result['data']['nodes']: # each user/org in the list. Remove orgs and users with no pinned repos.
             
-            try:
-                username = node['login']
-            except:
-                print("An error occurred with the API")
+            if node is None or not node:
+                non_users += 1
                 continue
             
-            dec_id = str(base64.b64decode(node['id']))
-            acc_type = dec_id[5:9] if dec_id[5] == 'U' else dec_id[5:17]
-            
-            if acc_type != 'User':
-                continue
-
-            id = int(str(base64.b64decode(node['id'])).split('r')[1][:-1])
+            username = node['login']
+            id = random.randint(1,2)
             contributions = node['contributionsCollection']['contributionCalendar']['totalContributions']
             line = f"{username},{id},{contributions}"
 
@@ -142,6 +137,7 @@ def gql_to_csv():
             for x in column_headers[3:]:
                 line += "," + str(langs[x])
             outfile.write(line + '\n')
+        print("non-users %d" % non_users)
 
     else:
         print(f"Request failed with status code {response.status_code}")
@@ -152,9 +148,8 @@ def gql_to_csv():
 def main():
     last_id = 0
 
-    for i in range(1000):
+    for i in range(100):
         variables['ids'], last_id = fetch_userid_list(last_id)
-        last_id += random.randint(1, 100000)
         gql_to_csv()
         print(f"done batch {i+1}")
 
