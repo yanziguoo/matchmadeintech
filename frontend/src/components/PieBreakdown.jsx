@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { PieChart } from 'react-minimal-pie-chart';
 
-export default function PieBreakdown() {
+export default function PieBreakdown(props) {
+    const list = props.list;
+
   const [pieData, setPieData] = useState([]);
   
-  const sampleData = [
-    { label: 'C++', quantity: 3 },
-    { label: 'Python', quantity: 1 },
-    { label: 'Java', quantity: 2 },
-    { label: 'Brainfuck', quantity: 3 },
-    { label: 'Other', quantity: 2 },
-  ];
+  const sampleData = Object.entries(list).map(([label, quantity]) => ({
+    label,
+    quantity
+  }));
 
   const colors = ['#E38627', '#C13C37', '#6A2135', '#339A65', '#A63EA9'];
   const total = sampleData.reduce((acc, curr) => acc + curr.quantity, 0);
@@ -18,7 +17,7 @@ export default function PieBreakdown() {
   useEffect(() => {
     const data = [];
     for (const [index, item] of sampleData.entries()) {
-      const percentage = (item.quantity / total) * 100;
+      const percentage = (item.quantity / total);
       data.push({ title: item.label, value: percentage, color: colors[index] });
     }
     setPieData(data);
