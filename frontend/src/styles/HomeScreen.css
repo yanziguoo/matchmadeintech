@@ -1,0 +1,55 @@
+.upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;  /* Add this line to center vertically */
+    width: 100%;
+    height: 100%;  /* Take the full height of the parent */
+    opacity: 1;
+    background-color: none;
+}
+
+.center-logo {
+    width: 30%;
+    margin-top:10%;
+}
+
+.upload {
+    width: 50%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.form-item {
+    width: 20em;
+    padding: 5px;
+    font-size: 18px;
+    opacity: 70%;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    padding-left: 10px;
+}
+
+.form-button {
+    width: 3em;
+    border-radius: 10px;
+    background-color: black;
+    color: white;
+    font-size: 16px;
+    padding: 8px;
+    border-width: 0px;
+}
+
+.form-button:hover {
+    background-color: #1e8fff58;
+    color: white;
+    cursor: pointer;
+    border-width: 1px;
+}
+
+.center-logo {
+    width: 400px;  
+    margin: auto;
+    display: block;
+}

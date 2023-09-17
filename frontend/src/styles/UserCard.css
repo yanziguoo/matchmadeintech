@@ -1,0 +1,34 @@
+.positioning-container {
+    /* existing styles */
+  }
+  
+  .backdrop {
+    /* existing styles */
+  }
+  
+  .card-container {
+    /* existing styles */
+    justify-content: flex-start; /* Align items to the top */
+    padding-top: 10px; /* Add some padding at the top */
+  }
+  
+  .img, .pie-container {
+    width: 150px; /* Reduced size */
+    height: 150px; /* Reduced size */
+  }
+  
+  .pie-container {
+    align-self: center; /* Center horizontally */
+  }
+  
+  .text, .name {
+    /* existing styles */
+    margin-top: 5px;  /* Reduced top margin to compress */
+    margin-bottom: 5px;  /* Reduced bottom margin to compress */
+  }
+  
+.name {
+    font-size: 2rem;
+    color: black;
+    margin-bottom: 5px;  /* Reduced bottom margin if necessary */
+}
