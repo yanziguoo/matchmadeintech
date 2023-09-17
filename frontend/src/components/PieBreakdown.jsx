@@ -11,13 +11,13 @@ export default function PieBreakdown(props) {
   }));
 
   const colors = ['#E38627', '#C13C37', '#6A2135', '#339A65', '#A63EA9'];
-  const total = sampleData.reduce((acc, curr) => acc + curr.quantity, 0);
   
   useEffect(() => {
     const data = [];
     for (const [index, item] of sampleData.entries()) {
-      const percentage = (item.quantity / total);
-      data.push({ title: item.label, value: percentage, color: colors[index] });
+      console.log(index, item)
+      // const percentage = (item.quantity / total);
+      data.push({ title: item.label, value: item.quantity * 100, color: colors[index] });
     }
     setPieData(data);
   }, []);
@@ -31,7 +31,7 @@ export default function PieBreakdown(props) {
       <div style={{ marginTop: '10px' }}>
         {pieData.map((dataEntry, index) => (
           <div key={index} style={{ color: dataEntry.color, marginBottom: '5px' }}>
-            {`${dataEntry.title}: ${Math.round(dataEntry.value / total * 100)}%`}
+            {`${dataEntry.title}: ${Math.round(dataEntry.value)}%`}
           </div>
         ))}
       </div>
