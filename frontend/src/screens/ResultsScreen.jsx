@@ -13,21 +13,24 @@ export default function ResultsScreen() {
   const [currMatch, setCurrMatch] = useState({});
   const [errorMess, setErrorMess] = useState('');
   const [curInd, setCurInd] = useState(0);
-  const [matched, setMatched] = useState(new Array(matches.length).fill(1));
+  const [matched, setMatched] = useState(new Array(25).fill(1));
 
   const location = useLocation();
 
   const handleArrowClick = (dir) => {
     setLoading(true);
+    console.log(matched);
     if (dir === 'up') setCurInd((curInd - 1 + matches.length) % matches.length);
     else if (dir === 'down') setCurInd((curInd + 1) % matches.length);
-    else if (dir === 'left' && matched[curInd] === 1) {
+    else if (dir === 'left') {
       let tmp = [...matched];
-      tmp[curInd] = 0;
+      if (matched[curInd] === 0) tmp[curInd] = 1;
+      else tmp[curInd] = 0;
       setMatched(tmp);
-    } else if (dir === 'right' && matched[curInd] === 1) {
+    } else if (dir === 'right') {
       let tmp = [...matched];
-      tmp[curInd] = 2;
+      if (matched[curInd] === 2) tmp[curInd] = 1;
+      else tmp[curInd] = 2;
       setMatched(tmp);
     }
     setLoading(false);
