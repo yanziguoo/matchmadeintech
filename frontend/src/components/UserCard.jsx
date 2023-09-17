@@ -12,6 +12,7 @@ export default function UserCard(props) {
   const commit = props.commit;
   const showArrows = props.showArrows; // New prop to control displaying of arrows
   const lang = props.lang;
+  const handleArrowClick = props.handleArrowClick;
 
   return (
     <div className="positioning-container">
@@ -25,10 +26,10 @@ export default function UserCard(props) {
         {showArrows && (
           <>
             {/* Arrows are displayed here */}
-            <img src={upArrow} alt="up arrow" className="arrow up" onClick={() => alert("HI")}/>
+            <img src={upArrow} alt="up arrow" className="arrow up" onClick={() => handleArrowClick("up")}/>
 
             <img src={rightArrow} alt="right arrow" className="arrow right" />
-            <img src={downArrow} alt="down arrow" className="arrow down" />
+            <img src={downArrow} alt="down arrow" className="arrow down" onClick={() => handleArrowClick("down")}/>
             <img src={leftArrow} alt="left arrow" className="arrow left" />
           </>
         )}
