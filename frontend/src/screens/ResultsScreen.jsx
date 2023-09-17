@@ -16,6 +16,7 @@ export default function ResultsScreen() {
     const username = location.state;
     console.log(username);
     setUsername(username);
+
     axios.get(`http://localhost:5000/find_matches/${username}`)
       .then(res => {
         console.log(res.data);
@@ -24,6 +25,8 @@ export default function ResultsScreen() {
         console.log(res.data);
       })
       .catch(err => console.log(err));
+
+
   }, []);
 
 
@@ -52,10 +55,11 @@ export default function ResultsScreen() {
       <a href="/" className="logo-link">
         <img src={bannerLogo} alt="Your Logo" className="small-logo" />
       </a>
+      <div>{matches[0]['username']}</div>
       <div className="cards-container">
         <UserCard pfp={tanay} name={username} join="march" lang="ffhdskjg" commit="300" />
         <UserCard pfp={tanay} name="Placeholder" join="april" lang="random" commit="400" />
       </div>
     </div>
   );
-}  
+}
