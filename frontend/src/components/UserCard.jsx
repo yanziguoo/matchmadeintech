@@ -12,17 +12,21 @@ export default function UserCard(props) {
   const commit = props.commit;
   const showArrows = props.showArrows; // New prop to control displaying of arrows
   const showCircle = props.showCircle;
+  const matched = props.matched;
   const lang = props.lang;
   const handleArrowClick = props.handleArrowClick;
+
+  const colors = ["red", "gray", "green"]
 
   return (
     <div className="positioning-container">
       <div className="backdrop"></div>
       <div className={`card-container ${showArrows ? 'arrow-container' : ''}`}>
-        {showCircle && <div className='swiped-circle'></div>}
+        {showCircle && <div className='swiped-circle' style={{background: colors[matched]}}></div>}
         <img src={pfp} className="img" alt="profile" />
         <div className="name">{name}</div>
         <div className="text">Commits: {commit}</div>
+
         <PieBreakdown list={lang}/>
 
         {showArrows && (
@@ -30,9 +34,9 @@ export default function UserCard(props) {
             {/* Arrows are displayed here */}
             <img src={upArrow} alt="up arrow" className="arrow up" onClick={() => handleArrowClick("up")}/>
 
-            <img src={rightArrow} alt="right arrow" className="arrow right" />
+            <img src={rightArrow} alt="right arrow" className="arrow right" onClick={() => handleArrowClick("right")}/>
             <img src={downArrow} alt="down arrow" className="arrow down" onClick={() => handleArrowClick("down")}/>
-            <img src={leftArrow} alt="left arrow" className="arrow left" />
+            <img src={leftArrow} alt="left arrow" className="arrow left" onClick={() => handleArrowClick("left")}/>
           </>
         )}
       </div>
