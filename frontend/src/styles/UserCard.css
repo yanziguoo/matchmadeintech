@@ -1,34 +1,56 @@
 .positioning-container {
-    /* existing styles */
-  }
-  
-  .backdrop {
-    /* existing styles */
-  }
-  
-  .card-container {
-    /* existing styles */
-    justify-content: flex-start; /* Align items to the top */
-    padding-top: 10px; /* Add some padding at the top */
-  }
-  
-  .img, .pie-container {
-    width: 150px; /* Reduced size */
-    height: 150px; /* Reduced size */
-  }
-  
-  .pie-container {
-    align-self: center; /* Center horizontally */
-  }
-  
-  .text, .name {
-    /* existing styles */
-    margin-top: 5px;  /* Reduced top margin to compress */
-    margin-bottom: 5px;  /* Reduced bottom margin to compress */
-  }
-  
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 120px;  /* Increased from 20px to 30px */
+}  
+
+.backdrop {
+  background-color: #B2B6FF;
+  border-radius: 25px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+  width: 290px;  /* Slightly smaller than the card */
+  height: 490px;  /* Slightly smaller than the card */
+  position: absolute;
+  z-index: 1;  /* Lower z-index */
+  top: 10px;  /* Shift down */
+  left: 10px;  /* Shift right */
+}
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;  /* Changed from center to space-between */
+  width: 290px;
+  height: 490px;
+  background-color: #FFE8FA;
+  border-radius: 25px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 2;
+  justify-content: flex-start; /* Align items to the top */
+  padding-top: 10px; /* Add some padding at the top */
+}
+
+.img {
+  width: 150px;
+  height: 150px;
+  border-radius: 25cm;
+  margin-top: 30px;  /* Decreased from 20px to 10px */
+  margin-bottom: 10px;  /* Added a small bottom margin */
+}
+
+.pie-container {
+  align-self: center; /* Center horizontally */
+  width: 150px; /* Reduced size */
+  height: 150px; /* Reduced size */
+}
+
 .name {
-    font-size: 2rem;
-    color: black;
-    margin-bottom: 5px;  /* Reduced bottom margin if necessary */
+  font-size: 2rem;
+  color: black;
+  margin-top: 5px;  /* Reduced top margin to compress */
+  margin-bottom: 5px;  /* Reduced bottom margin to compress */
 }
