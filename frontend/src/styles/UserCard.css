@@ -11,11 +11,21 @@
   border-radius: 25px;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
   width: 290px;  /* Slightly smaller than the card */
-  height: 0px;  /* Slightly smaller than the card */
+  height: 500px;  /* Slightly smaller than the card */
   position: absolute;
   z-index: 1;  /* Lower z-index */
   top: 10px;  /* Shift down */
   left: 10px;  /* Shift right */
+}
+
+.swiped-circle {
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  background: black;
+  border-radius: 50px;
+  min-width: 40px;
+  min-height: 40px;
 }
 
 .card-container {
@@ -85,13 +95,13 @@
 }
 
 .right {
-  right: -20px; /* Position to the right of the container */
+  right: -30px; /* Position to the right of the container */
   top: 50%;
   transform: translate(0, -50%);
 }
 
 .down {
-  bottom: -20px; /* Position below the container */
+  bottom: -30px; /* Position below the container */
   left: 50%;
   transform: translate(-50%, 0);
 }

@@ -11,6 +11,7 @@ export default function UserCard(props) {
   const name = props.name;
   const commit = props.commit;
   const showArrows = props.showArrows; // New prop to control displaying of arrows
+  const showCircle = props.showCircle;
   const lang = props.lang;
   const handleArrowClick = props.handleArrowClick;
 
@@ -18,6 +19,7 @@ export default function UserCard(props) {
     <div className="positioning-container">
       <div className="backdrop"></div>
       <div className={`card-container ${showArrows ? 'arrow-container' : ''}`}>
+        {showCircle && <div className='swiped-circle'></div>}
         <img src={pfp} className="img" alt="profile" />
         <div className="name">{name}</div>
         <div className="text">Commits: {commit}</div>

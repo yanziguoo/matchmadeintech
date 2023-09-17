@@ -74,8 +74,8 @@ export default function ResultsScreen() {
       </a>
 
       <div className="cards-container">
-        <UserCard pfp={tanay} name={user["username"]} lang={user["languages"]} commit={user["contributions"]} showArrows={false} handleArrowClick={handleArrowClick}/>
-        <UserCard pfp={tanay} name={currMatch['username']} lang={currMatch['languages']} commit={currMatch['contributions']} showArrows={true} handleArrowClick={handleArrowClick}/>
+        <UserCard pfp={tanay} name={user["username"]} lang={user["languages"]} commit={user["contributions"]} showArrows={false} showCircle={false} handleArrowClick={handleArrowClick}/>
+        <UserCard pfp={tanay} name={currMatch['username']} lang={currMatch['languages']} commit={currMatch['contributions']} showArrows={true} showCircle={true} handleArrowClick={handleArrowClick}/>
       </div>
 
     </div>
