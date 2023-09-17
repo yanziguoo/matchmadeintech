@@ -23,8 +23,8 @@ headers = {
     "Authorization": f"Bearer {PA_TOKEN}",
 }
 
-column_headers = ["Username", "Id", "Contributions", "JavaScript", "Python", "Java", "C#", "PHP", "TypeScript", "Ruby", "C++", "C", "Swift", "Go", "Shell", "Kotlin", "Rust", "PowerShell", "Objective-C", "R", "MATLAB", "Dart", "Vue", "Assembly", "Sass", "CSS", "HTML", "Pascal", "Racket", "Zig", "Other"]
-tcols = [x + '-T' for x in column_headers[1:]]
+column_headers = ["Username", "CreatedAt", "AvatarUrl", "Id", "Contributions", "JavaScript", "Python", "Java", "C#", "PHP", "TypeScript", "Ruby", "C++", "C", "Swift", "Go", "Shell", "Kotlin", "Rust", "PowerShell", "Objective-C", "R", "MATLAB", "Dart", "Vue", "Assembly", "Sass", "CSS", "HTML", "Pascal", "Racket", "Zig", "Other"]
+tcols = [x + '-T' for x in column_headers[3:]]
 knownLangs = set(column_headers)
 
 gql_query = """
@@ -32,6 +32,8 @@ query GetUser($username: String!) {
     user: user(login: $username) { # my username
         login
         id
+        createdAt
+        avatarUrl
         contributionsCollection {
             contributionCalendar {
                 totalContributions
@@ -86,8 +88,11 @@ def get_user(username):
     
         try:
             login = result['data']['user']['login']
+            createdAt = result['data']['user']['createdAt']
+            avatarUrl = result['data']['user']['avatarUrl']
             id = random.randint(1, 2)
             contributions = result['data']['user']['contributionsCollection']['contributionCalendar']['totalContributions']
+
         except:
             return {"success":False, "message":"Invalid user"}
 
@@ -108,8 +113,8 @@ def get_user(username):
         if num_bytes == 0:
             return {"success":False, "message":"User has no pinned repositories..."}
 
-        user_csv = f"{login},{id},{contributions}"
-        for x in column_headers[3:]:
+        user_csv = f"{login},{createdAt},{avatarUrl},{id},{contributions}"
+        for x in column_headers[5:]:
             user_csv += "," + str(langs[x])
     else:
         print(f"Request failed with status code {response.status_code}")
@@ -151,7 +156,7 @@ def standardize(data):
         curr['id'] = row['Id']
         curr['contributions'] = row['Contributions']
         curr['languages'] = {}
-        for lang in column_headers[3:]:
+        for lang in column_headers[5:]:
             if row[lang] > 0:
                 curr['languages'][lang] = row[lang]
         ret.append(curr)
@@ -190,7 +195,7 @@ def find_matches(username):
         "contributions": user["Contributions"],
         "languages": {}
     }
-    for lang in column_headers[3:]:
+    for lang in column_headers[5:]:
         if user[lang] > 0:
             standardized_user["languages"][lang] = str(user[lang])
     print(standardized_user)
