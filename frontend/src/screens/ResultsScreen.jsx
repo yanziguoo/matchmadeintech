@@ -28,7 +28,11 @@ export default function ResultsScreen() {
   if (!username) {
     return (
       <div>
+        <a href="/" className="logo-link">
+            <img src={bannerLogo} alt="Your Logo" className="small-logo" />
+        </a>
         <h1>Invalid username</h1>
+        
       </div>
     )
   }
