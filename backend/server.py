@@ -145,6 +145,7 @@ def find_matches(username):
     for lang in meanAndStd:
         data[lang + '-T'] = (data[lang] - meanAndStd[lang][0]) / meanAndStd[lang][1]
     
+    print(data.head())
 
     # prediction
     predicted_cluster = model.predict(data[tcols])[0]

@@ -1,6 +1,5 @@
 import random
 import requests
-import base64
 import os
 from collections import defaultdict
 from os.path import join, dirname
