@@ -25,7 +25,8 @@ export default function UserCard(props) {
         {showArrows && (
           <>
             {/* Arrows are displayed here */}
-            <img src={upArrow} alt="up arrow" className="arrow up" />
+            <img src={upArrow} alt="up arrow" className="arrow up" onClick={() => alert("HI")}/>
+
             <img src={rightArrow} alt="right arrow" className="arrow right" />
             <img src={downArrow} alt="down arrow" className="arrow down" />
             <img src={leftArrow} alt="left arrow" className="arrow left" />

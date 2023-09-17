@@ -71,6 +71,11 @@
   width: 16px; /* Smaller size */
   height: 16px; /* Smaller size */
   position: absolute; /* Absolute positioning inside the container */
+  padding: 4px;
+}
+
+.arrow:hover {
+  cursor: pointer;
 }
 
 .up {
