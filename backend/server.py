@@ -3,7 +3,6 @@ from flask import Flask
 import requests
 import pickle
 import os
-import base64
 from collections import defaultdict
 from os.path import join, dirname
 from dotenv import load_dotenv
@@ -88,10 +87,10 @@ def get_user(username):
     
         try:
             login = result['data']['user']['login']
-            createdAt = result['data']['user']['createdAt']
+            createdAt = str(result['data']['user']['createdAt'])
             avatarUrl = result['data']['user']['avatarUrl']
-            id = random.randint(1, 2)
-            contributions = result['data']['user']['contributionsCollection']['contributionCalendar']['totalContributions']
+            id = str(random.randint(1, 2))
+            contributions = str(result['data']['user']['contributionsCollection']['contributionCalendar']['totalContributions'])
 
         except:
             return {"success":False, "message":"Invalid user"}
@@ -153,6 +152,8 @@ def standardize(data):
     for username, row in picked.iterrows():
         curr = {}
         curr['username'] = username
+        curr['createdAt'] = row['CreatedAt']
+        curr['avatarUrl'] = row['AvatarUrl']
         curr['id'] = row['Id']
         curr['contributions'] = row['Contributions']
         curr['languages'] = {}
@@ -160,7 +161,6 @@ def standardize(data):
             if row[lang] > 0:
                 curr['languages'][lang] = row[lang]
         ret.append(curr)
-
     return ret
 
 
@@ -189,16 +189,21 @@ def find_matches(username):
     user = users.iloc[0]
     print(user)
 
+
     standardized_user = {
         "username": username,
-        "id": user["Id"],
-        "contributions": user["Contributions"],
+        "createdAt": user["CreatedAt"],
+        "avatarUrl": user["AvatarUrl"],
+        "id": str(user["Id"]),
+        "contributions": str(user["Contributions"]),
         "languages": {}
     }
+
     for lang in column_headers[5:]:
         if user[lang] > 0:
             standardized_user["languages"][lang] = str(user[lang])
     print(standardized_user)
+
     return {
         "success": True,
         "matches": standardize(pd.read_csv("./data/user.csv", index_col=0)),
