@@ -21,6 +21,8 @@ query($ids:[ID!]!) {
         ... on User {
             login
             id
+            createdAt
+            avatarUrl
             contributionsCollection {
                 contributionCalendar {
                     totalContributions
@@ -61,7 +63,7 @@ data = {
     'variables': variables,
 }
 
-column_headers = ["Username", "Id", "Contributions", "JavaScript", "Python", "Java", "C#", "PHP", "TypeScript", "Ruby", "C++", "C", "Swift", "Go", "Shell", "Kotlin", "Rust", "PowerShell", "Objective-C", "R", "MATLAB", "Dart", "Vue", "Assembly", "Sass", "CSS", "HTML", "Pascal", "Racket", "Zig", "Other"]
+column_headers = ["Username", "CreatedAt", "AvatarUrl", "Id", "Contributions", "JavaScript", "Python", "Java", "C#", "PHP", "TypeScript", "Ruby", "C++", "C", "Swift", "Go", "Shell", "Kotlin", "Rust", "PowerShell", "Objective-C", "R", "MATLAB", "Dart", "Vue", "Assembly", "Sass", "CSS", "HTML", "Pascal", "Racket", "Zig", "Other"]
 knownLangs = set(column_headers)
 
 outfile.write(','.join(column_headers) + '\n')
@@ -111,9 +113,11 @@ def gql_to_csv():
                 continue
             
             username = node['login']
+            createdAt = node['createdAt']
+            avatarUrl = node['avatarUrl']
             id = random.randint(1,2)
             contributions = node['contributionsCollection']['contributionCalendar']['totalContributions']
-            line = f"{username},{id},{contributions}"
+            line = f"{username},{createdAt},{avatarUrl},{id},{contributions}"
 
             langs = defaultdict(int)
             pinned_projects = node['pinnedItems']['nodes']
@@ -133,7 +137,7 @@ def gql_to_csv():
             if num_bytes == 0:
                 continue
 
-            for x in column_headers[3:]:
+            for x in column_headers[5:]:
                 line += "," + str(langs[x])
             outfile.write(line + '\n')
         print("non-users %d" % non_users)
