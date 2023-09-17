@@ -11,6 +11,7 @@ export default function ResultsScreen() {
   const [username, setUsername] = useState('');
   const [matches, setMatches] = useState([]);
   const location = useLocation();
+  let curInd = 0;
 
   useEffect(() => {
     const username = location.state;
@@ -311,7 +312,7 @@ export default function ResultsScreen() {
       <a href="/" className="logo-link">
         <img src={bannerLogo} alt="Your Logo" className="small-logo" />
       </a>
-      <div>{matches[0]['username']}</div>
+      {/* <div>{matches[0]['username']}</div> */}
       <div className="cards-container">
         <UserCard pfp={tanay} name={username} join="march" lang="ffhdskjg" commit="300" showArrows={false} />
         <UserCard pfp={tanay} name="Placeholder" join="april" lang="random" commit="400" showArrows={true} />
