@@ -121,15 +121,7 @@ def get_user(username):
     return {"success":True}
 
 
-@app.route('/find_matches/<username>')
-def find_matches(username):
-    global model, meanAndStd
-
-    response = get_user(username)
-    if not response["success"]:
-        return response["message"]
-    data = pd.read_csv("./data/user.csv", index_col=0)
-
+def standardize(data):
     # convert to proper format
     col = ["Id", "Contributions", "JavaScript", "Python", "Java", "C#", "PHP", "TypeScript", "Ruby", "C++", "C", "Swift", "Go", "Shell", "Kotlin", "Rust", "PowerShell", "Objective-C", "R", "MATLAB", "Dart", "Vue", "Assembly", "Sass", "CSS", "HTML", "Pascal", "Racket", "Zig", "Other"]
     def turn_to_percent(X, columns):
@@ -145,18 +137,13 @@ def find_matches(username):
     for lang in meanAndStd:
         data[lang + '-T'] = (data[lang] - meanAndStd[lang][0]) / meanAndStd[lang][1]
     
-    print(data.head())
-
     # prediction
     predicted_cluster = model.predict(data[tcols])[0]
-    print(predicted_cluster)
 
     condition = training_data['cluster'] == predicted_cluster
     cluster = training_data[condition]
-    print(cluster)
     picked = cluster.sample(n=min(len(cluster), 20), random_state=0)
     ret = []
-    print(picked)
 
     for username, row in picked.iterrows():
         curr = {}
@@ -164,11 +151,53 @@ def find_matches(username):
         curr['id'] = row['Id']
         curr['contributions'] = row['Contributions']
         curr['languages'] = {}
-        for lang in col[2:]:
+        for lang in column_headers[3:]:
             if row[lang] > 0:
                 curr['languages'][lang] = row[lang]
         ret.append(curr)
 
     return ret
+
+
+@app.route('/find_matches/<username>')
+def find_matches(username):
+    global model, meanAndStd
+
+    response = get_user(username)
+    if not response["success"]:
+        return response
+    
+    users = pd.read_csv("./data/user.csv", index_col=0)
+
+    # convert to proper format
+    col = ["Id", "Contributions", "JavaScript", "Python", "Java", "C#", "PHP", "TypeScript", "Ruby", "C++", "C", "Swift", "Go", "Shell", "Kotlin", "Rust", "PowerShell", "Objective-C", "R", "MATLAB", "Dart", "Vue", "Assembly", "Sass", "CSS", "HTML", "Pascal", "Racket", "Zig", "Other"]
+    def turn_to_percent(X, columns):
+        X[columns] = X[columns].div(X[columns].sum(axis=1), axis=0)
+        return X
+
+    # Create a FunctionTransformer using the defined function and pass the subset_columns argument
+    transformer = FunctionTransformer(turn_to_percent, validate=False, kw_args={'columns': col[2:]})
+
+    # Apply the transformation to your dataset
+    users = transformer.transform(users)
+
+    user = users.iloc[0]
+    print(user)
+
+    standardized_user = {
+        "username": username,
+        "id": user["Id"],
+        "contributions": user["Contributions"],
+        "languages": {}
+    }
+    for lang in column_headers[3:]:
+        if user[lang] > 0:
+            standardized_user["languages"][lang] = str(user[lang])
+    print(standardized_user)
+    return {
+        "success": True,
+        "matches": standardize(pd.read_csv("./data/user.csv", index_col=0)),
+        "user": standardized_user
+    }
 
 
