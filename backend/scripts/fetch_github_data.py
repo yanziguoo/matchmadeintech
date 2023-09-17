@@ -10,7 +10,7 @@ load_dotenv(dotenv_path)
 PA_TOKEN = os.environ.get("PA_TOKEN")
 
 training_data_path = join(dirname(__file__),'../data/training_data.csv')
-outfile = open(training_data_path, "w")
+outfile = open(training_data_path, "a")
 
 BASE_URL = "https://api.github.com"
 gql_url = f"{BASE_URL}/graphql"
@@ -66,7 +66,7 @@ data = {
 column_headers = ["Username", "CreatedAt", "AvatarUrl", "Id", "Contributions", "JavaScript", "Python", "Java", "C#", "PHP", "TypeScript", "Ruby", "C++", "C", "Swift", "Go", "Shell", "Kotlin", "Rust", "PowerShell", "Objective-C", "R", "MATLAB", "Dart", "Vue", "Assembly", "Sass", "CSS", "HTML", "Pascal", "Racket", "Zig", "Other"]
 knownLangs = set(column_headers)
 
-outfile.write(','.join(column_headers) + '\n')
+# outfile.write(','.join(column_headers) + '\n')
 
 
 # begin by querying v3 api for 20 users
@@ -80,7 +80,7 @@ def fetch_userid_list(since):
 
         for user in result:
             ids.append(user['node_id'])
-        last_id += random.randint(1000, 2000)
+        last_id += random.randint(10000, 20000)
 
     else:
         print(f"Request failed with status code {userid_fetch_response.status_code}")
@@ -149,7 +149,7 @@ def gql_to_csv():
 
 
 def main():
-    last_id = 0
+    last_id = 22861311
 
     for i in range(1000):
         variables['ids'], last_id = fetch_userid_list(last_id)
