@@ -13,6 +13,7 @@ export default function ResultsScreen() {
   const [currMatch, setCurrMatch] = useState({});
   const [errorMess, setErrorMess] = useState('');
   const [curInd, setCurInd] = useState(0);
+  const [matched, setMatched] = useState(new Array(matches.length).fill(1));
 
   const location = useLocation();
 
@@ -20,12 +21,25 @@ export default function ResultsScreen() {
     setLoading(true);
     if (dir === 'up') setCurInd((curInd - 1 + matches.length) % matches.length);
     else if (dir === 'down') setCurInd((curInd + 1) % matches.length);
+    else if (dir === 'left' && matched[curInd] === 1) {
+      let tmp = [...matched];
+      tmp[curInd] = 0;
+      setMatched(tmp);
+    } else if (dir === 'right' && matched[curInd] === 1) {
+      let tmp = [...matched];
+      tmp[curInd] = 2;
+      setMatched(tmp);
+    }
     setLoading(false);
   }
 
   useEffect(() => {
     setCurrMatch(matches[curInd]);
   }, [curInd]);
+
+  useEffect(() => {
+    console.log(matched);
+  }, [matched]);
 
   
   useEffect(() => {
@@ -75,7 +89,7 @@ export default function ResultsScreen() {
 
       <div className="cards-container">
         <UserCard pfp={tanay} name={user["username"]} lang={user["languages"]} commit={user["contributions"]} showArrows={false} showCircle={false} handleArrowClick={handleArrowClick}/>
-        <UserCard pfp={tanay} name={currMatch['username']} lang={currMatch['languages']} commit={currMatch['contributions']} showArrows={true} showCircle={true} handleArrowClick={handleArrowClick}/>
+        <UserCard pfp={tanay} name={currMatch['username']} lang={currMatch['languages']} commit={currMatch['contributions']} showArrows={true} showCircle={true} matched={matched[curInd]} handleArrowClick={handleArrowClick}/>
       </div>
 
     </div>
