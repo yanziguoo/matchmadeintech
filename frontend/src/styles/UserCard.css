@@ -61,3 +61,38 @@
   margin-top: 5px;
   margin-bottom: 5px;
 }
+
+
+.arrow-container {
+  position: relative;
+}
+
+.arrow {
+  width: 16px; /* Smaller size */
+  height: 16px; /* Smaller size */
+  position: absolute; /* Absolute positioning inside the container */
+}
+
+.up {
+  top: -20px; /* Position above the container */
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.right {
+  right: -20px; /* Position to the right of the container */
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+.down {
+  bottom: -20px; /* Position below the container */
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.left {
+  left: -20px; /* Position to the left of the container */
+  top: 50%;
+  transform: translate(0, -50%);
+}

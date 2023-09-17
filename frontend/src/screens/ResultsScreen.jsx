@@ -313,9 +313,10 @@ export default function ResultsScreen() {
       </a>
       <div>{matches[0]['username']}</div>
       <div className="cards-container">
-        <UserCard pfp={tanay} name={username} join="march" lang="ffhdskjg" commit="300" />
-        <UserCard pfp={tanay} name="Placeholder" join="april" lang="random" commit="400" />
+        <UserCard pfp={tanay} name={username} join="march" lang="ffhdskjg" commit="300" showArrows={false} />
+        <UserCard pfp={tanay} name="Placeholder" join="april" lang="random" commit="400" showArrows={true} />
       </div>
+
     </div>
   );
 }
