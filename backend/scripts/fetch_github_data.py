@@ -113,8 +113,8 @@ def gql_to_csv():
                 continue
             
             username = node['login']
-            createdAt = result['data']['user']['createdAt']
-            avatarUrl = result['data']['user']['avatarUrl']
+            createdAt = node['createdAt']
+            avatarUrl = node['avatarUrl']
             id = random.randint(1,2)
             contributions = node['contributionsCollection']['contributionCalendar']['totalContributions']
             line = f"{username},{createdAt},{avatarUrl},{id},{contributions}"
