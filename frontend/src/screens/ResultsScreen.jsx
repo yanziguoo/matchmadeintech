@@ -48,7 +48,7 @@ export default function ResultsScreen() {
   useEffect(() => {
     const username = location.state;
 
-    axios.get(`https://a64a-129-97-124-4.ngrok-free.app/find_matches/${username}`)
+    axios.get(`https://lobster-app-fa8ny.ondigitalocean.app/find_matches/${username}`)
       .then(res => {
         if (res.data && res.data.success) {
           setMatches(res.data.matches);
