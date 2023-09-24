@@ -1,5 +1,7 @@
+from concurrent.futures import thread
 import random
 from flask import Flask
+from waitress import serve
 import requests
 import pickle
 import os
@@ -10,13 +12,14 @@ from flask_cors import CORS
 import pandas as pd
 from sklearn.preprocessing import FunctionTransformer
 import random
+import dotenv
 
 app = Flask(__name__)
 CORS(app)
 
-dotenv_path = join(dirname(__file__), '../.env')
+dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
-PA_TOKEN = os.environ.get("PA_TOKEN")
+PA_TOKEN = dotenv.get_key(dotenv_path, 'PA_TOKEN')
 
 headers = {
     "Authorization": f"Bearer {PA_TOKEN}",
@@ -211,3 +214,5 @@ def find_matches(username):
     }
 
 
+if __name__ == '__main__':
+    serve(app, host='0.0.0.0', port="8000", threads=1)
